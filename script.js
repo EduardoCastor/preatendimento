@@ -2,6 +2,7 @@ const form = document.getElementById('formAtendeAgendamento');
 const statusBox = document.getElementById('status');
 const select = document.getElementById('protocoloSelect');
 const statusSelect = document.getElementById('statusSelect');
+const inputData = document.getElementById('data');
 
 // 🔹 Webhook para BUSCAR dados
 const WEBHOOK_LISTA = 'https://n8n.srv1352561.hstgr.cloud/webhook/carregaprotpre';
