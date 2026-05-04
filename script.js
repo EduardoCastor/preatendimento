@@ -30,17 +30,14 @@ function formatarDataISO(data) {
 function isDiaUtil(data) {
   const diaSemana = data.getDay();
   const dataISO = formatarDataISO(data);
-
   return !diasBloqueados.includes(diaSemana) && !feriados.includes(dataISO);
 }
 
 function getProximoDiaUtil(dataBase) {
   const data = new Date(dataBase);
-
   do {
     data.setDate(data.getDate() + 1);
   } while (!isDiaUtil(data));
-
   return data;
 }
 
@@ -63,9 +60,7 @@ function configurarCalendario() {
   let hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
 
-  // 👉 usa hoje se for útil
   const dataInicial = isDiaUtil(hoje) ? hoje : getProximoDiaUtil(hoje);
-
   const maxDate = adicionarDiasUteis(hoje, 5);
 
   inputData.min = formatarDataISO(dataInicial);
@@ -79,7 +74,6 @@ function configurarCalendario() {
 async function carregarLista() {
   try {
     const dataSelecionada = inputData.value;
-
     if (!dataSelecionada) return;
 
     select.innerHTML = `<option>Carregando...</option>`;
@@ -87,7 +81,8 @@ async function carregarLista() {
     const response = await fetch(WEBHOOK_LISTA, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: dataSelecionada })
+      body: JSON.stringify({ data: dataSelecionada }),
+      cache: 'no-store'
     });
 
     if (!response.ok) throw new Error();
@@ -104,22 +99,25 @@ async function carregarLista() {
     });
 
   } catch (error) {
+    console.error(error);
     select.innerHTML = '<option>Não há atendimentos disponíveis</option>';
   }
 }
 
 // ============================
-// AO ALTERAR DATA
+// EVENTO AO ALTERAR DATA (CORRIGIDO)
 // ============================
-inputData.addEventListener('change', () => {
-  const dataSelecionada = new Date(inputData.value + 'T00:00:00');
+inputData.addEventListener('input', () => {
+  let dataSelecionada = new Date(inputData.value + 'T00:00:00');
 
   if (!isDiaUtil(dataSelecionada)) {
     alert("Não há atendimento nesse dia.");
 
-    const novaData = getProximoDiaUtil(dataSelecionada);
-    inputData.value = formatarDataISO(novaData);
+    dataSelecionada = getProximoDiaUtil(dataSelecionada);
+    inputData.value = formatarDataISO(dataSelecionada);
   }
+
+  console.log("📅 Buscando dados para:", inputData.value);
 
   carregarLista();
 });
@@ -162,7 +160,7 @@ form.addEventListener('submit', async (e) => {
 });
 
 // ============================
-// INIT (EXECUTA AO CARREGAR)
+// INIT
 // ============================
 configurarCalendario();
 carregarLista();
