@@ -164,4 +164,11 @@ form.addEventListener('submit', async (e) => {
     statusBox.style.display = 'block';
     statusBox.innerHTML = '❌ Erro ao atualizar';
   }
+
+  // ============================
+  // INIT
+  // ============================
+  configurarCalendario();
+  carregarLista();
+ 
 });
