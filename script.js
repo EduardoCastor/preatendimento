@@ -113,8 +113,14 @@ carregarLista();
 async function carregarLista() {
   try {
     const response = await fetch(WEBHOOK_LISTA);
-    //const data = await response.json();
-    const data = inputData.value;
+    const data = await response.json();
+    const dataSelecionada = inputData.value;
+
+      if (!dataSelecionada) return;
+
+      select.innerHTML = `<option>Carregando...</option>`;
+   
+    //const data = inputData.value;
     select.innerHTML = '<option value="">Selecione um atendimento</option>';
 
     (data.slots || []).forEach(item => {
