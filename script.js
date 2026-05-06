@@ -142,7 +142,7 @@ form.addEventListener('submit', async (e) => {
     const response = await fetch(WEBHOOK_UPDATE, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ protocolo, status })
+      body: JSON.stringify({ protocolo, status, resposta })
     });
 
     if (!response.ok) throw new Error();
