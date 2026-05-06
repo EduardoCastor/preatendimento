@@ -2,6 +2,7 @@ const form = document.getElementById('formAtendeAgendamento');
 const statusBox = document.getElementById('status');
 const select = document.getElementById('protocoloSelect');
 const statusSelect = document.getElementById('statusSelect');
+const inputResposta = document.getElementById('resposta');
 const inputData = document.getElementById('data');
 
 // 🔹 Webhooks
@@ -130,6 +131,7 @@ form.addEventListener('submit', async (e) => {
 
   const protocolo = select.value;
   const status = statusSelect.value;
+  const resposta = inputResposta.value;
 
   if (!protocolo || !status) {
     alert('Preencha todos os campos');
